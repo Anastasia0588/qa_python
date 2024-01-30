@@ -115,21 +115,36 @@ class TestBooksCollector:
 
         collector = BooksCollector()
 
+        #создание словаря books_genre и добавление всех книг в список любимых книг
         for book, genre in books_data.items():
             collector.add_new_book(book)
             collector.set_book_genre(book, genre)
             collector.add_book_in_favorites(book)
 
-        assert collector.delete_book_from_favorites('Макс Фрай') == list(collector.books_genre.keys()).remove('Макс Фрай')
+        #удаление книги из списка любимых книг и сохраннение результирующего списка любимых книг в переменную
+        result_fav_books_lst = collector.delete_book_from_favorites('Макс Фрай')
+
+        #отбор всех ключей-названий книг из словаря books_genre,
+        # преобразование его в список, удаление книги из списка и сохранение в переменную для проверки
+        ref_books_lst = list(collector.books_genre.keys()).remove('Макс Фрай')
+
+        assert  result_fav_books_lst == ref_books_lst
 
     @pytest.mark.parametrize('books_data', books_data)
     def test_get_list_of_favorites_books_true(self, books_data):
 
         collector = BooksCollector()
 
+        # создание словаря books_genre и добавление всех книг в список любимых книг
         for book, genre in books_data.items():
             collector.add_new_book(book)
             collector.set_book_genre(book, genre)
             collector.add_book_in_favorites(book)
 
-        assert collector.get_list_of_favorites_books() == list(collector.books_genre.keys())
+        #получение списка любимых книг и сохранение его в переменную
+        result_fav_books_lst = collector.get_list_of_favorites_books()
+
+        #отбор всех ключей-названий книг из словаря books_genre, преобразование его в список и сохранение в переменную
+        ref_books_lst = list(collector.books_genre.keys())
+
+        assert result_fav_books_lst == ref_books_lst
